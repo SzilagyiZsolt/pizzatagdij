@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <td>${dolgozo.vnev}</td>
                     <td>${dolgozo.vcim}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" onclick="adatBetoltes(${dolgozo.vazon})" id="select">Kiválaszt</button>
+                        <button type="button" class="btn btn-outline-success" onclick="${adatBetoltes(dolgozo.vazon)}" id="select">Kiválaszt</button>
                     </td>
                 </tr>`;
         return sor;
@@ -90,5 +90,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         </thead>
                         <tbody>`;
         return fejlec;
+    }
+    function adatBetoltes(azon){
+        vazon=document.getElementById("vazon").value;
+        return document.getElementById("vazon").value=azon;
     }
 });
