@@ -2,10 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const createButton = document.getElementById("create");
     const readButton = document.getElementById("read");
     const updateButton = document.getElementById("update");
-    const deleteButton = document.getElementById("delete");
     const selectButton = document.getElementById("select");
-    //const dolgozoForm = document.getElementById("dolgozoForm");
-    //const dolgozoDiv = document.getElementById("ugyfellista");
     
     createButton.addEventListener("click", async function(){
         let vazon = document.getElementById("vazon").value;
@@ -15,15 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
             method: "POST",
             mode: "cors",
             body: formdata
-        };
-        let response= await fetch(baseUrl, options);
-    });
-    deleteButton.addEventListener("click", async function(){
-        let vazon = document.getElementById("vazon").value;
-        let baseUrl='http://localhost/pizzatagdij/index.php?vevo/'+vazon;
-        let options={
-            method: "DELETE",
-            mode: "cors"
         };
         let response= await fetch(baseUrl, options);
     });
@@ -73,7 +61,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     <td>${dolgozo.vnev}</td>
                     <td>${dolgozo.vcim}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" onclick="${adatBetoltes(dolgozo.vazon)}" id="select">Kiválaszt</button>
+                    <button type="button" class="btn btn-outline-success" id="select" onclick="adatBetoltes(${dolgozo.vazon}, '${dolgozo.vnev}', ${dolgozo.vcim})" >Kiválaszt</button>
+                        <button type="button" class="btn btn-outline-danger" id="delete" onclick="adatTorles(${dolgozo.vazon})" ><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>`;
         return sor;
@@ -91,8 +80,39 @@ document.addEventListener("DOMContentLoaded", function() {
                         <tbody>`;
         return fejlec;
     }
-    function adatBetoltes(azon){
-        vazon=document.getElementById("vazon").value;
-        return document.getElementById("vazon").value=azon;
-    }
 });
+function adatBetoltes(vazon, vnev, vcim){
+    let baseUrl='http://localhost/pizzatagdij/index.php?vevo/'+vazon;
+    let options={
+        method: "GET",
+        mode: "cors"
+    };
+    let response= fetch(baseUrl, options);
+    document.getElementById("vazon").value=vazon;
+    document.getElementById("vnev").value=vnev;
+    document.getElementById("vcim").value=vcim;
+    response.then(function(response){
+        if(response.ok){
+            let data= response.json();
+        }
+        else{
+            console.error("Hiba a szerverben!");
+        }
+    });
+}
+function adatTorles(vazon){
+    let baseUrl='http://localhost/pizzatagdij/index.php?vevo/'+vazon;
+    let options={
+        method: "DELETE",
+        mode: "cors"
+    };
+    let response= fetch(baseUrl, options);
+    response.then(function(response){
+        if(response.ok){
+            let data= response.json();
+        }
+        else{
+            console.error("Hiba a szerverben!");
+        }
+    });
+}
